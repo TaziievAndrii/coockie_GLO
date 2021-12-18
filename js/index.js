@@ -2,7 +2,7 @@ const todoControl = document.querySelector(".todo-control");
 const headerInput = document.querySelector(".header-input");
 const todoList = document.querySelector(".todo-list");
 const todoCompleted = document.querySelector(".todo-completed");
-const toDoData = [];
+let toDoData = [];
 
 const render = function () {
   todoList.innerHTML = "";
@@ -45,21 +45,29 @@ todoControl.addEventListener("submit", function (event) {
   todoList.innerHTML = "";
   todoCompleted.innerHTML = "";
 
-  if (headerInput.value === "") {
+  if (headerInput.value.trim() === "") {
     alert("Введите что-либо");
     render();
     return;
   }
-  
+
   const newTodo = {
     text: headerInput.value,
     completed: false,
   };
-  toDoData.push(newTodo);
+    toDoData.push(newTodo);
+localStorage.setItem("toDoData", JSON.stringify(toDoData))
   headerInput.value = "";
 
   render();
 });
+
+if (toDoData = JSON.parse(localStorage.getItem("toDoData"))) {
+    render()
+    localStorage.clear()
+} else {
+    toDoData = [] 
+}
 
 console.log("[todoCompleted]", todoCompleted);
 console.log("[headerInput]", headerInput);
