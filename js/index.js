@@ -7,10 +7,9 @@ const toDoData = [];
 const render = function () {
   todoList.innerHTML = "";
   todoCompleted.innerHTML = "";
-
-  toDoData.forEach(function (item) {
-    const li = document.createElement("li");
-
+  
+  toDoData.forEach(function (item, index) {
+      const li = document.createElement("li");
     li.classList.add("todo-item");
 
     li.innerHTML =
@@ -28,28 +27,38 @@ const render = function () {
       todoList.append(li);
     }
 
+    li.querySelector(".todo-complete").addEventListener("click", function () {
+      item.completed = !item.completed;
+      render();
+    });
 
-    li.querySelector(".todo-complete").addEventListener("click", function(){
-        item.completed = !item.completed
+    li.querySelector(".todo-remove").addEventListener("click", function () {
+        toDoData.splice(index, 1)
         render()
-    })
+      });
   });
+  
 };
 
 todoControl.addEventListener("submit", function (event) {
   event.preventDefault();
+  todoList.innerHTML = "";
+  todoCompleted.innerHTML = "";
 
-  if(headerInput.value === "") {
-      alert("Введите что-либо")
-  } else {
-    const newTodo = {
-        text: headerInput.value,
-        completed: false,
-      };
-      toDoData.push(newTodo);
-      headerInput.value = "";
-    }
+  if (headerInput.value === "") {
+    alert("Введите что-либо");
     render();
+    return;
+  }
+  
+  const newTodo = {
+    text: headerInput.value,
+    completed: false,
+  };
+  toDoData.push(newTodo);
+  headerInput.value = "";
+
+  render();
 });
 
 console.log("[todoCompleted]", todoCompleted);
